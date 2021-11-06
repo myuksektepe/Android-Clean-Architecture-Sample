@@ -1,0 +1,43 @@
+Clean Architecture Nedir?
+
+S.O.L.I.D tasarım presipleri baz alınarak 2012 Ağustos ayında Bob Amca (Uncle Bob) lakablı Robert C. Martin tarafından geliştirilen yazılım mimarisidir.
+
+Bknz: https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html
+
+3 ana katmana ayrılır, bunlar;
+
+- Presentation (Sunum)
+- Domain (İş Mantığı)
+- Data (Veri)
+
+
+# Presentation Katmanı
+
+Kullanıcı ile etkileşimde olan katmandır.
+
+- UI (User Interface)
+-- Activity
+-- Fragment
+-- Adapter
+-- ViewModel
+
+- DI (Dependency Injection)
+-- Module
+
+
+# Domain
+
+Logic işlemlerinin yapıldığı katmandır.
+
+- Mapper
+- Model
+- Repository
+- UseCase
+
+# Data
+
+Local veya Remote veri kaynaklarının tanımlandığı katmandır.
+
+- Entity
+- Repository
+

@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Clean Architecture Sample</string>
+
+    <string name="add">Add</string>
+    <string name="warning">Upps!</string>
+    <string name="note_list_empty">Not listeniz şu anda boş!</string>
+</resources>
