@@ -12,7 +12,7 @@ import murat.cleanarchitecture.sample.data.entity.NoteEntity
  *
  * @ Database annotation (dipnot)'u kullanılarak tanımlanmaya başlanır ve parametre olarak
  * - entities: Data katmanında oluşturulan Entity'lerin liste hali,
- * - versionCode: Integer (tam sayısal değeri) olarak veritabanının versiyon kodu,
+ * - versionCode: Integer (tam sayı değeri) olarak veritabanının versiyon kodu,
  * - exportSchema: Veritabanını şemasının klasör içerisine çıkartılması için Boolean (doğru/yanlış) tipinde bir değer
  *
  * almalıdır.
