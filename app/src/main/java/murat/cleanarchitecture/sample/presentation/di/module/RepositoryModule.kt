@@ -13,7 +13,7 @@ import murat.cleanarchitecture.sample.domain.repository.NotesRepository
 object RepositoryModule {
 
     @Provides
-    fun provideUseCaseRepository(localDataSource: NotesLocalDataSource): NotesRepository {
+    fun provideNoteRepository(localDataSource: NotesLocalDataSource): NotesRepository {
         return NotesRepositoryImpl(localDataSource)
     }
 

@@ -7,7 +7,6 @@ import murat.cleanarchitecture.sample.domain.repository.NotesRepository
 import javax.inject.Inject
 
 /**
- *
  * UseCase
  *
  * Uygulamanın içerdiği her bir Feature (özellik)'de kullanıcı için yapılan ya da kullacının bizzat yaptığı

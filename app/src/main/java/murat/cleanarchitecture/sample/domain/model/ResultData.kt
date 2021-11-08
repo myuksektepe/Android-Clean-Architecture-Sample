@@ -1,5 +1,9 @@
 package murat.cleanarchitecture.sample.domain.model
 
+/**
+ * TODO ResultData?
+ */
+
 sealed class ResultData<out T> {
     data class Success<out T>(val data: T? = null) : ResultData<T>()
 

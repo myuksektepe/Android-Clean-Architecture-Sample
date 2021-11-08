@@ -1,0 +1,18 @@
+Module
+
+Provide edilmesi (sağlanması) gereken değişken ve fonksiyonları Hilt'e eklerken kullanılan yapılardır.
+
+Fonksiyon isimlerinin bir anlamı yoktur.
+
+Önemli olan dönüş tipleridir.
+
+Bu dönüş tipi Hilt ile inject'e edildiği bir yerde çağırılır.
+
+Örneğin; Domain katmanında feature (özellik) için oluşturulan Repository'lerden kalıtılan
+Repository Implementation sınıflarının hiç bir yerden çağırılmadığını görürsünüz.
+Bunlar sadece RepositoryModule içerisinde -Repository tipinde dönecek şekilde- Provide edilirler.
+
+FeatureRepository: Sadece fonksiyonlar tanımlanır.
+FeatureRepositoryImpl: Fonksiyonların yapacağı işlemler belirlenir (FeatureDataSource'de ki fonksiyonlarla iletişime geçer)
+RepositoryModule: FeatureRepository tipinde dönecek şekilde bir fonksiyon yazılır. Fonksiyon içinde FeatureRepositoryImpl'e FeatureDataSource gönderilerek dönüş kodu yazılır.
+FeatureUseCase: Sınıfın yapısına FeatureRepository inject edilir.

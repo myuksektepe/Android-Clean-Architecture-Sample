@@ -16,6 +16,10 @@ import murat.cleanarchitecture.sample.domain.model.ResultData
 import sample.R
 import java.util.*
 
+/**
+ * TODO BaseActivity?
+ */
+
 abstract class BaseActivity<T : BaseViewModel, B : ViewDataBinding> : AppCompatActivity() {
 
     // Binding işlemi için ilgili ekranın layout'u

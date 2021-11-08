@@ -4,6 +4,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import murat.cleanarchitecture.sample.domain.model.ResultData
 
+/**
+ * TODO BaseViewModel?
+ */
 
 abstract class BaseViewModel : ViewModel() {
 

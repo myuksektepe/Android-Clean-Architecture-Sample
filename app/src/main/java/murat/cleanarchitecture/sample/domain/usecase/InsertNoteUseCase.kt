@@ -6,6 +6,10 @@ import murat.cleanarchitecture.sample.domain.model.ResultData
 import murat.cleanarchitecture.sample.domain.repository.NotesRepository
 import javax.inject.Inject
 
+/**
+ * Bknz: GetNotesUseCase.kt
+ */
+
 class InsertNoteUseCase @Inject constructor(private val respository: NotesRepository) {
     operator fun invoke(note: Note): Flow<ResultData<Unit>> = respository.insertNote(note)
 }

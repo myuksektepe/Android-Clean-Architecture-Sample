@@ -12,7 +12,7 @@ import murat.cleanarchitecture.sample.domain.usecase.GetNotesUseCase
 object UseCaseModule {
 
     @Provides
-    fun providesGetNotesUseCase(respository: NotesRepository): GetNotesUseCase {
+    fun provideGetNotesUseCase(respository: NotesRepository): GetNotesUseCase {
         return GetNotesUseCase(respository)
     }
 

@@ -8,7 +8,7 @@ import murat.cleanarchitecture.sample.domain.repository.NotesRepository
 import javax.inject.Inject
 
 /**
- * RepositoryImplementatiton
+ * Repository Implementatiton
  *
  * Repository'ler interface tipinde oldukları için Hilt'e inject edilemezler bu yüzden bir Repository'den kalıtılmış olan
  * RepositoryImplementation sınıflarını oluştururuz. Bu sınıflar local ya da network üzerinden gelen verileri işleyecekleri için

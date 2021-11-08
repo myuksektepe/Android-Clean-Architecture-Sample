@@ -5,8 +5,7 @@ import murat.cleanarchitecture.sample.domain.model.Note
 import murat.cleanarchitecture.sample.domain.model.ResultData
 
 /**
- *
- * Repository
+ * Feature -> Repository
  *
  * İçerisinde bir Feature (özellik) için kullanılacak olan tüm fonksiyonları barındıran interface'lerdir.
  * Örneğin: Not işlemleri için kaydet, listele, güncelle vb. gibi.

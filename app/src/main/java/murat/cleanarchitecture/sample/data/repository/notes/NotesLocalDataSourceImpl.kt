@@ -8,6 +8,22 @@ import murat.cleanarchitecture.sample.data.mapper.toNoteEntity
 import murat.cleanarchitecture.sample.domain.model.Note
 import javax.inject.Inject
 
+/**
+ * Feature -> LocalDataSourceImpl
+ *
+ * LocalDataSource'lerden katılıtan implementation sınıflarıdır.
+ *
+ * İlgili feature (özellik) için oluşturulan Data Access Object (Veri Erişim Nesnesi)'i inject ederek
+ * Dao içerisindeki fonksiyonlar ile LocalDataSource'de yer alan fonksiyonlar arasındaki bağlantıları kurarlar.
+ *
+ * Bu işlemleri yaparken;
+ *
+ * - Domain katmanındaki UseCase'lere veri iletirken Entitiy'i Model'e,
+ * - UseCase'den aldığı veriyi Dao'e iletirken Model'i Entity'e çevirirler.
+ *
+ * ve bunun için Data katmanında ilgili feature (özellik) için oluşturulan Mapper'ları kullanırlar.
+ */
+
 class NotesLocalDataSourceImpl @Inject constructor(private val noteDao: NoteDao) : NotesLocalDataSource {
 
     override suspend fun getNotes(): MutableList<Note> {
