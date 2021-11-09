@@ -4,4 +4,11 @@
     <string name="add">Add</string>
     <string name="warning">Upps!</string>
     <string name="note_list_empty">Not listeniz şu anda boş!</string>
+    <string name="title">Başlık</string>
+    <string name="save">Kaydet</string>
+    <string name="content">Notunuzu buraya giriniz…</string>
+    <string name="your_note">Notunuz</string>
+    <string name="close">Kapat</string>
+    <string name="title_is_not_empty">Başlık boş bırakılamaz!</string>
+    <string name="content_is_not_empty">Not alanı boş bırakılamaz!</string>
 </resources>

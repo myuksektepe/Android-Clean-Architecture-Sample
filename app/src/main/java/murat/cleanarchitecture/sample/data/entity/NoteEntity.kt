@@ -38,9 +38,8 @@ import java.util.*
 data class NoteEntity(
 
     @PrimaryKey(autoGenerate = true)
-    @NonNull
     @ColumnInfo(name = "id")
-    val id: Int,
+    val id: Int = 0,
 
     @NonNull
     @ColumnInfo(name = "title")

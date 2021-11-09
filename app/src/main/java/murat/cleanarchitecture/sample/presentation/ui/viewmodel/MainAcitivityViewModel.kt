@@ -1,5 +1,9 @@
 package murat.cleanarchitecture.sample.presentation.ui.viewmodel
 
+import android.app.Application
+import android.util.Log
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -7,11 +11,13 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import murat.cleanarchitecture.sample.TAG
 import murat.cleanarchitecture.sample.domain.model.Note
 import murat.cleanarchitecture.sample.domain.model.ResultData
 import murat.cleanarchitecture.sample.domain.usecase.GetNotesUseCase
 import murat.cleanarchitecture.sample.domain.usecase.InsertNoteUseCase
 import murat.cleanarchitecture.sample.presentation.common.base.BaseViewModel
+import sample.R
 import javax.inject.Inject
 
 /**
@@ -32,6 +38,7 @@ Hilt için @HiltViewModel ile annotate edilirler.
 
 @HiltViewModel
 class MainAcitivityViewModel @Inject constructor(
+    private val application: Application,
     private val getNotesUseCase: GetNotesUseCase,
     private val insertNoteUseCase: InsertNoteUseCase
 ) : BaseViewModel() {
@@ -44,6 +51,11 @@ class MainAcitivityViewModel @Inject constructor(
     private var _insertNote = MutableLiveData<ResultData<Unit>>()
     val insertNote: LiveData<ResultData<Unit>>
         get() = _insertNote
+
+
+    val bottomUp: Animation = AnimationUtils.loadAnimation(application.applicationContext, R.anim.bottom_up)
+    val bottomDown: Animation = AnimationUtils.loadAnimation(application.applicationContext, R.anim.bottom_down)
+
 
     fun fetchNotes() {
         viewModelScope.launch(Dispatchers.IO) {
@@ -65,4 +77,5 @@ class MainAcitivityViewModel @Inject constructor(
             }
         }
     }
+
 }

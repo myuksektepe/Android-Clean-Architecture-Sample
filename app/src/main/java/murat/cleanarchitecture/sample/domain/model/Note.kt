@@ -1,6 +1,7 @@
 package murat.cleanarchitecture.sample.domain.model
 
 import java.io.Serializable
+import java.util.*
 
 /**
  *  Model
@@ -19,6 +20,6 @@ data class Note(
     var title: String,
     var content: String,
     var color: String?,
-    var create_at: Long,
+    var create_at: Long = Date().time,
     var update_at: Long?,
 ) : Serializable

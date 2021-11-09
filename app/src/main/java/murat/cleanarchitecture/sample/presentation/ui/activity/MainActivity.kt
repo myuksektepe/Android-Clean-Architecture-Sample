@@ -1,10 +1,14 @@
 package murat.cleanarchitecture.sample.presentation.ui.activity
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
+import android.view.ViewGroup
 import androidx.activity.viewModels
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import dagger.hilt.android.AndroidEntryPoint
 import murat.cleanarchitecture.sample.domain.model.Note
 import murat.cleanarchitecture.sample.domain.model.ResultData
@@ -14,6 +18,7 @@ import murat.cleanarchitecture.sample.presentation.ui.viewmodel.MainAcitivityVie
 import sample.R
 import sample.databinding.ActivityMainBinding
 import java.util.*
+
 
 /**
  *
@@ -44,6 +49,10 @@ class MainActivity : BaseActivity<MainAcitivityViewModel, ActivityMainBinding>()
     override val viewModel: MainAcitivityViewModel by viewModels()
     override var viewLifecycleOwner: LifecycleOwner = this
     private lateinit var notesAdapter: NotesAdapter
+    private lateinit var frmAddNote: ViewGroup
+    private lateinit var fabAdd: FloatingActionButton
+    //private lateinit var noteTitle: TextInputLayout
+    //private lateinit var noteContent: TextInputLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,24 +60,6 @@ class MainActivity : BaseActivity<MainAcitivityViewModel, ActivityMainBinding>()
         setUI()
         //getMockNotes()
 
-        binding.fabAdd.setOnClickListener { view ->
-            /*
-            Snackbar.make(view, "Here's a Snackbar", Snackbar.LENGTH_LONG)
-                .setAction("Action", null)
-                .show()
-             */
-            setMockNoteToDB()
-        }
-    }
-
-    private fun setUI() {
-        notesAdapter = NotesAdapter(mutableListOf())
-
-        binding.rcyMain.apply {
-            //layoutManager = GridLayoutManager(context, 2)
-            layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-            adapter = notesAdapter
-        }
     }
 
     override fun observeViewModel() {
@@ -79,6 +70,7 @@ class MainActivity : BaseActivity<MainAcitivityViewModel, ActivityMainBinding>()
                 is ResultData.Success -> {
                     if (it.data?.size!! > 0) {
                         notesAdapter.update(it.data)
+                        binding.txtNoteListEmpty.visibility = View.GONE
                     } else {
                         binding.txtNoteListEmpty.visibility = View.VISIBLE
                     }
@@ -91,6 +83,109 @@ class MainActivity : BaseActivity<MainAcitivityViewModel, ActivityMainBinding>()
                 }
             }
         })
+    }
+
+    private fun setUI() {
+        // Set presenter to binding
+        binding.presenter = this
+
+        //NotesAdapter
+        notesAdapter = NotesAdapter(mutableListOf())
+
+        // RecyclerView
+        binding.rcyMain.apply {
+            //layoutManager = GridLayoutManager(context, 2)
+            layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+            adapter = notesAdapter
+        }
+
+        frmAddNote = binding.frmAddNote
+        fabAdd = binding.fabAdd
+
+
+        fabAdd.setOnClickListener { _ ->
+            //setMockNoteToDB()
+            showNewNotePage()
+        }
+
+        binding.btnSaveNote.setOnClickListener {
+
+            val title = binding.noteTitle.editText?.text.toString()
+            val content = binding.noteContent.editText?.text.toString()
+
+            if (title.isEmpty()) {
+                binding.noteTitle.error = getString(R.string.title_is_not_empty)
+            } else if (content.isEmpty()) {
+                binding.noteTitle.error = null
+                binding.noteContent.error = getString(R.string.content_is_not_empty)
+            } else {
+                binding.noteContent.error = null
+
+                val newNote = Note(
+                    id = 0,
+                    title = title,
+                    content = content,
+                    color = null,
+                    update_at = null
+                )
+
+                viewModel.insertNote(newNote).apply {
+                    observeViewModel()
+                    hideNewNotePage(null)
+                }
+            }
+        }
+
+        binding.noteTitle.editText?.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                if (count > 0) {
+                    binding.noteTitle.error = null
+                } else {
+                    binding.noteTitle.error = getString(R.string.title_is_not_empty)
+                }
+            }
+
+            override fun afterTextChanged(p0: Editable?) {
+            }
+        })
+
+        binding.noteContent.editText?.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                if (count > 0) {
+                    binding.noteContent.error = null
+                } else {
+                    binding.noteContent.error = getString(R.string.content_is_not_empty)
+                }
+            }
+
+            override fun afterTextChanged(p0: Editable?) {
+            }
+        })
+    }
+
+    private fun showNewNotePage() {
+        frmAddNote.startAnimation(viewModel.bottomUp)
+        frmAddNote.visibility = View.VISIBLE
+
+        fabAdd.startAnimation(viewModel.bottomDown)
+        fabAdd.visibility = View.GONE
+    }
+
+    fun hideNewNotePage(view: View?) {
+        frmAddNote.startAnimation(viewModel.bottomDown)
+        frmAddNote.visibility = View.GONE
+
+        fabAdd.startAnimation(viewModel.bottomUp)
+        fabAdd.visibility = View.VISIBLE
+
+        binding.noteTitle.editText?.text?.clear()
+        binding.noteContent.editText?.text?.clear()
     }
 
     private fun getMockNotes() {
@@ -115,6 +210,22 @@ class MainActivity : BaseActivity<MainAcitivityViewModel, ActivityMainBinding>()
         )
         viewModel.insertNote(mockNote).apply {
             observeViewModel()
+            hideNewNotePage(null)
         }
     }
+
+    fun insertNoteFromUI(title: String, content: String) {
+        val note = Note(
+            id = 0,
+            title = title,
+            content = content,
+            color = null,
+            update_at = null
+        )
+        viewModel.insertNote(note).apply {
+            observeViewModel()
+            hideNewNotePage(null)
+        }
+    }
+
 }

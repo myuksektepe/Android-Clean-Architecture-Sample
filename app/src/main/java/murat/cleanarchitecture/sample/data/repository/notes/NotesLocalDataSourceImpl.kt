@@ -36,7 +36,8 @@ class NotesLocalDataSourceImpl @Inject constructor(private val noteDao: NoteDao)
 
     override suspend fun insertNote(note: Note) {
         note.toNoteEntity().apply {
-            noteDao.insertNote(this)
+            val l = noteDao.insertNote(this)
+            Log.i(TAG, "NotesLocalDataSourceImpl -> Insert L: $l")
         }
     }
 
