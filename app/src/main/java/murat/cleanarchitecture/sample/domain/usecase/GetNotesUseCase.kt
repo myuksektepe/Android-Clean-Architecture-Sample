@@ -19,6 +19,6 @@ import javax.inject.Inject
  *
  **/
 
-class GetNotesUseCase @Inject constructor(private val respository: NotesRepository) {
-    fun invoke(): Flow<ResultData<MutableList<Note>>> = respository.getNotes()
+class GetNotesUseCase @Inject constructor(private val repository: NotesRepository) {
+    fun invoke(): Flow<ResultData<MutableList<Note>>> = repository.getNotes()
 }

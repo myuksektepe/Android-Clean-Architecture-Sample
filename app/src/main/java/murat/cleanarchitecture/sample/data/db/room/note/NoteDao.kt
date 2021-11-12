@@ -35,7 +35,7 @@ interface NoteDao {
     fun getAllNotes(): MutableList<NoteEntity>
 
     @Query("SELECT * FROM notes WHERE id = :id")
-    fun getNoteById(id: Int): Flow<NoteEntity>
+    fun getNoteById(id: Int): NoteEntity
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertNote(note: NoteEntity): Long

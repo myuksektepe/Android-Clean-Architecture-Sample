@@ -56,6 +56,15 @@ class NotesRepositoryImpl @Inject constructor(private val localDataSource: Notes
         }
     }
 
+    override fun getNote(id: Int): Flow<ResultData<Note>> = flow {
+        emit(ResultData.Loading())
+        try {
+            emit(ResultData.Success(localDataSource.getNote(id)))
+        } catch (e: Exception) {
+            emit(ResultData.Failed(errorMessage = e.message))
+        }
+    }
+
     override fun updateNote(note: Note, oldNote: Note): Flow<ResultData<Unit>> = flow {
         emit(ResultData.Loading())
         try {

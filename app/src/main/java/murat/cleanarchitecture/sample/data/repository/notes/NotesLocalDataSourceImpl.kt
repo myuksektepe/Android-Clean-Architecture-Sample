@@ -34,6 +34,10 @@ class NotesLocalDataSourceImpl @Inject constructor(private val noteDao: NoteDao)
         return allNotes
     }
 
+    override suspend fun getNote(id: Int): Note {
+        return noteDao.getNoteById(id).toNote()
+    }
+
     override suspend fun insertNote(note: Note) {
         note.toNoteEntity().apply {
             val l = noteDao.insertNote(this)

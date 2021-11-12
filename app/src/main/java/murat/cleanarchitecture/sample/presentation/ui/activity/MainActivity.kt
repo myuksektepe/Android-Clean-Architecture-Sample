@@ -51,8 +51,6 @@ class MainActivity : BaseActivity<MainAcitivityViewModel, ActivityMainBinding>()
     private lateinit var notesAdapter: NotesAdapter
     private lateinit var frmAddNote: ViewGroup
     private lateinit var fabAdd: FloatingActionButton
-    //private lateinit var noteTitle: TextInputLayout
-    //private lateinit var noteContent: TextInputLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -85,55 +83,39 @@ class MainActivity : BaseActivity<MainAcitivityViewModel, ActivityMainBinding>()
         })
     }
 
-    private fun setUI() {
-        // Set presenter to binding
+    override fun initBinding() {
+        super.initBinding()
         binding.presenter = this
+        binding.viewModel = viewModel
+    }
 
-        //NotesAdapter
+    private fun setUI() {
         notesAdapter = NotesAdapter(mutableListOf())
 
-        // RecyclerView
         binding.rcyMain.apply {
             //layoutManager = GridLayoutManager(context, 2)
             layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
             adapter = notesAdapter
+            notesAdapter.onItemSelected = { position, item ->
+                viewModel.getNoteByID(item.id)
+                viewModel.getNote.observe(viewLifecycleOwner, {
+                    when (it) {
+                        is ResultData.Success -> {
+                            hideNewNotePage(null)
+                            binding.noteTitle.editText?.setText(it.data!!.title)
+                            binding.noteContent.editText?.setText(it.data!!.content)
+                            showNewNotePage()
+                        }
+                    }
+                })
+            }
         }
 
         frmAddNote = binding.frmAddNote
         fabAdd = binding.fabAdd
-
-
         fabAdd.setOnClickListener { _ ->
             //setMockNoteToDB()
             showNewNotePage()
-        }
-
-        binding.btnSaveNote.setOnClickListener {
-
-            val title = binding.noteTitle.editText?.text.toString()
-            val content = binding.noteContent.editText?.text.toString()
-
-            if (title.isEmpty()) {
-                binding.noteTitle.error = getString(R.string.title_is_not_empty)
-            } else if (content.isEmpty()) {
-                binding.noteTitle.error = null
-                binding.noteContent.error = getString(R.string.content_is_not_empty)
-            } else {
-                binding.noteContent.error = null
-
-                val newNote = Note(
-                    id = 0,
-                    title = title,
-                    content = content,
-                    color = null,
-                    update_at = null
-                )
-
-                viewModel.insertNote(newNote).apply {
-                    observeViewModel()
-                    hideNewNotePage(null)
-                }
-            }
         }
 
         binding.noteTitle.editText?.addTextChangedListener(object : TextWatcher {
@@ -184,8 +166,35 @@ class MainActivity : BaseActivity<MainAcitivityViewModel, ActivityMainBinding>()
         fabAdd.startAnimation(viewModel.bottomUp)
         fabAdd.visibility = View.VISIBLE
 
-        binding.noteTitle.editText?.text?.clear()
-        binding.noteContent.editText?.text?.clear()
+        //binding.noteTitle.editText?.text?.clear()
+        //binding.noteContent.editText?.text?.clear()
+
+        binding.noteTitle.error = null
+        binding.noteContent.error = null
+    }
+
+    fun insertNoteFromUI(title: String, content: String) {
+        if (title.isEmpty()) {
+            binding.noteTitle.error = getString(R.string.title_is_not_empty)
+        } else if (content.isEmpty()) {
+            binding.noteTitle.error = null
+            binding.noteContent.error = getString(R.string.content_is_not_empty)
+        } else {
+            binding.noteContent.error = null
+
+            val newNote = Note(
+                id = 0,
+                title = title,
+                content = content,
+                color = null,
+                update_at = null
+            )
+
+            viewModel.insertNote(newNote).apply {
+                observeViewModel()
+                hideNewNotePage(null)
+            }
+        }
     }
 
     private fun getMockNotes() {
@@ -213,19 +222,4 @@ class MainActivity : BaseActivity<MainAcitivityViewModel, ActivityMainBinding>()
             hideNewNotePage(null)
         }
     }
-
-    fun insertNoteFromUI(title: String, content: String) {
-        val note = Note(
-            id = 0,
-            title = title,
-            content = content,
-            color = null,
-            update_at = null
-        )
-        viewModel.insertNote(note).apply {
-            observeViewModel()
-            hideNewNotePage(null)
-        }
-    }
-
 }

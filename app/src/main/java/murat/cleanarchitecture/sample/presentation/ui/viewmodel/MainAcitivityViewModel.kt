@@ -1,7 +1,6 @@
 package murat.cleanarchitecture.sample.presentation.ui.viewmodel
 
 import android.app.Application
-import android.util.Log
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.lifecycle.LiveData
@@ -11,9 +10,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import murat.cleanarchitecture.sample.TAG
 import murat.cleanarchitecture.sample.domain.model.Note
 import murat.cleanarchitecture.sample.domain.model.ResultData
+import murat.cleanarchitecture.sample.domain.usecase.GetNoteUseCase
 import murat.cleanarchitecture.sample.domain.usecase.GetNotesUseCase
 import murat.cleanarchitecture.sample.domain.usecase.InsertNoteUseCase
 import murat.cleanarchitecture.sample.presentation.common.base.BaseViewModel
@@ -39,8 +38,9 @@ Hilt için @HiltViewModel ile annotate edilirler.
 @HiltViewModel
 class MainAcitivityViewModel @Inject constructor(
     private val application: Application,
+    private val insertNoteUseCase: InsertNoteUseCase,
     private val getNotesUseCase: GetNotesUseCase,
-    private val insertNoteUseCase: InsertNoteUseCase
+    private val getNoteUseCase: GetNoteUseCase,
 ) : BaseViewModel() {
 
     private var _mutableListNotes = MutableLiveData<ResultData<MutableList<Note>>>()
@@ -53,9 +53,13 @@ class MainAcitivityViewModel @Inject constructor(
         get() = _insertNote
 
 
+    private var _getNote = MutableLiveData<ResultData<Note>>()
+    val getNote: LiveData<ResultData<Note>>
+        get() = _getNote
+
+
     val bottomUp: Animation = AnimationUtils.loadAnimation(application.applicationContext, R.anim.bottom_up)
     val bottomDown: Animation = AnimationUtils.loadAnimation(application.applicationContext, R.anim.bottom_down)
-
 
     fun fetchNotes() {
         viewModelScope.launch(Dispatchers.IO) {
@@ -74,6 +78,16 @@ class MainAcitivityViewModel @Inject constructor(
                     _insertNote.postValue(it)
                 }
                 fetchNotes()
+            }
+        }
+    }
+
+    fun getNoteByID(id: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            getNoteUseCase.invoke(id).collect {
+                handleTask(it) {
+                    _getNote.postValue(it)
+                }
             }
         }
     }

@@ -11,7 +11,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.LifecycleOwner
-import dagger.hilt.android.AndroidEntryPoint
 import murat.cleanarchitecture.sample.domain.model.ResultData
 import sample.R
 import java.util.*
@@ -22,46 +21,33 @@ import java.util.*
 
 abstract class BaseActivity<T : BaseViewModel, B : ViewDataBinding> : AppCompatActivity() {
 
-    // Binding işlemi için ilgili ekranın layout'u
     abstract val layoutRes: Int
-
-    // İlgili UI'ın viewModel'i
     abstract val viewModel: T
-
-    // Binding için lifecycleowner değişkeni
     abstract var viewLifecycleOwner: LifecycleOwner
-
-    // binding'i yönetebilmek için geçici _binding değişkeni
     private var _binding: B? = null
-
-    // Geçici _binding değişkeninin içi oldurulmuş, non-null hali
     val binding get() = _binding!!
+
+    open fun initBinding() {
+        this._binding?.lifecycleOwner = this
+        viewLifecycleOwner = this
+    }
 
     abstract fun observeViewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        _binding = DataBindingUtil.inflate(layoutInflater, layoutRes, null, false)
+        setContentView(_binding!!.root)
+
         initBinding()
         observeViewModel()
     }
 
-    private fun initBinding() {
-        // binding'e lifeCycleOwner tanımlaması
-        this._binding?.lifecycleOwner = this
 
-        // ...
-        viewLifecycleOwner = this
-
-        // Binding işlemi
-        _binding = DataBindingUtil.inflate(layoutInflater, layoutRes, null, false)
-        setContentView(_binding!!.root)
-    }
 
     override fun onDestroy() {
         super.onDestroy()
-
-        // Acitivity destroy olduğunda binding'in içini boşalt
         _binding = null
     }
 
@@ -119,7 +105,7 @@ abstract class BaseActivity<T : BaseViewModel, B : ViewDataBinding> : AppCompatA
         }
     }
 
-    fun randomColorHex() : String{
+    fun randomColorHex(): String {
         val random = Random()
         val nextInt: Int = random.nextInt(0xffffff + 1)
         val colorCode = String.format("#%06x", nextInt)

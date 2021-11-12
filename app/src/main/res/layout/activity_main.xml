@@ -4,16 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
-        <import type="android.view.View" />
-
         <variable
             name="presenter"
             type="murat.cleanarchitecture.sample.presentation.ui.activity.MainActivity" />
 
         <variable
-            name="note"
-            type="murat.cleanarchitecture.sample.domain.model.Note" />
+            name="viewModel"
+            type="murat.cleanarchitecture.sample.presentation.ui.viewmodel.MainAcitivityViewModel" />
     </data>
 
     <FrameLayout
@@ -81,8 +78,7 @@
                         android:layout_marginTop="4dp"
                         android:inputType="text"
                         android:maxLines="1"
-                        android:padding="16dp"
-                        android:text="@={note.title}" />
+                        android:padding="16dp" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -104,8 +100,7 @@
                         android:layout_gravity="top|start"
                         android:layout_marginTop="4dp"
                         android:gravity="top|start"
-                        android:padding="16dp"
-                        android:text="@={note.content}" />
+                        android:padding="16dp" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -134,6 +129,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="end"
                         android:layout_weight="1"
+                        android:onClick="@{() -> presenter.insertNoteFromUI(noteTitle.getEditText().text.toString(), noteContent.getEditText().text.toString())}"
                         android:text="@string/save" />
                 </LinearLayout>
 
@@ -144,7 +140,3 @@
     </FrameLayout>
 
 </layout>
-
-    <!--
-                            android:onClick="@{(view) -> presenter.insertNoteFromUI(note.title, note.content)}"
-    -->
