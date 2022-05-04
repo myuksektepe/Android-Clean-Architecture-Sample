@@ -15,6 +15,7 @@ import murat.cleanarchitecture.sample.feature_note.presentation.adapter.NotesAda
 import murat.cleanarchitecture.sample.feature_note.presentation.view_model.MainAcitivityViewModel
 import murat.cleanarchitecture.sample.util.ResultState
 import murat.cleanarchitecture.sample.util.base.BaseActivity
+import murat.cleanarchitecture.sample.util.extensions.hideKeyboard
 import sample.R
 import sample.databinding.ActivityMainBinding
 import java.util.*
@@ -96,18 +97,18 @@ class MainActivity : BaseActivity<MainAcitivityViewModel, ActivityMainBinding>()
             //layoutManager = GridLayoutManager(context, 2)
             layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
             adapter = notesAdapter
-            notesAdapter.onItemSelected = { position, item ->
+            notesAdapter.onItemSelected = { _, item ->
                 viewModel.getNoteByID(item.id)
-                viewModel.getNote.observe(viewLifecycleOwner, {
+                viewModel.getNote.observe(viewLifecycleOwner) {
                     when (it) {
                         is ResultState.SUCCESS -> {
-                            hideNewNotePage(null)
+                            //hideNewNotePage(null)
                             binding.noteTitle.editText?.setText(it.data!!.title)
                             binding.noteContent.editText?.setText(it.data!!.content)
                             showNewNotePage()
                         }
                     }
-                })
+                }
             }
         }
 
@@ -171,6 +172,8 @@ class MainActivity : BaseActivity<MainAcitivityViewModel, ActivityMainBinding>()
 
         binding.noteTitle.error = null
         binding.noteContent.error = null
+
+        binding.noteContent.hideKeyboard()
     }
 
     fun insertNoteFromUI(title: String, content: String) {

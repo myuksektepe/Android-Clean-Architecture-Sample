@@ -6,6 +6,6 @@ import murat.cleanarchitecture.sample.feature_note.domain.repository.NotesReposi
 import murat.cleanarchitecture.sample.util.ResultState
 import javax.inject.Inject
 
-class GetNoteByIdUseCase @Inject constructor(private val repository: NotesRepository) {
-    fun invoke(id: Int): Flow<ResultState<Note>> = repository.getNote(id)
+class DeleteUseCase @Inject constructor(private val repository: NotesRepository) {
+    fun invoke(note: Note): Flow<ResultState<Unit>> = repository.deleteNote(note)
 }

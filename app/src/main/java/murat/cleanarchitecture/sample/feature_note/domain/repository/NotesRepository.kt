@@ -26,7 +26,7 @@ import murat.cleanarchitecture.sample.util.ResultState
 interface NotesRepository {
     fun insertNote(note: Note): Flow<ResultState<Unit>>
     fun getNotes(): Flow<ResultState<MutableList<Note>>>
-    fun getNoteById(id: Int): Flow<ResultState<Note>>
+    fun getNote(id: Int): Flow<ResultState<Note>>
     fun updateNote(note: Note, oldNote: Note): Flow<ResultState<Unit>>
     fun deleteNote(note: Note): Flow<ResultState<Unit>>
 }

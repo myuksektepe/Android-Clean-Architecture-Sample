@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="murat.cleanarchitecture.sample.feature_note.presentation.activity.MainActivity">
 
     <data>
+
         <variable
             name="presenter"
             type="murat.cleanarchitecture.sample.feature_note.presentation.activity.MainActivity" />
@@ -15,8 +17,7 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context="murat.cleanarchitecture.sample.feature_note.presentation.activity.MainActivity">
+        android:layout_height="match_parent">
 
         <!-- RecyclerView for show notes-->
         <androidx.recyclerview.widget.RecyclerView

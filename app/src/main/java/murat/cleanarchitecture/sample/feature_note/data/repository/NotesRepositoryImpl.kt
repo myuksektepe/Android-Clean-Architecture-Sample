@@ -56,7 +56,7 @@ class NotesRepositoryImpl @Inject constructor(private val localDataSource: Notes
         }
     }
 
-    override fun getNoteById(id: Int): Flow<ResultState<Note>> = flow {
+    override fun getNote(id: Int): Flow<ResultState<Note>> = flow {
         emit(ResultState.LOADING())
         try {
             emit(ResultState.SUCCESS(localDataSource.getNote(id)))

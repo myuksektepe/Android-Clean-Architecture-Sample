@@ -95,7 +95,7 @@ abstract class BaseActivity<T : BaseViewModel, B : ViewDataBinding> : AppCompatA
 
             alertDialog.setButton(
                 AlertDialog.BUTTON_POSITIVE, buttonMessage
-            ) { dialog, which -> callback }
+            ) { _, _ -> callback }
 
             val btnPositive = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE)
 

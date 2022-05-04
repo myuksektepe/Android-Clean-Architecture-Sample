@@ -80,7 +80,7 @@ class MainAcitivityViewModel @Inject constructor(
 
     fun getNoteByID(id: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            noteUseCases.getNoteByIdUseCase.invoke(id).collect {
+            noteUseCases.getNoteUseCase.invoke(id).collect {
                 handleTask(it) {
                     _getNote.postValue(it)
                 }

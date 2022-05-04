@@ -12,7 +12,8 @@
         android:theme="@style/Theme.CleanArchitectureSample">
         <activity
             android:name="murat.cleanarchitecture.sample.feature_note.presentation.activity.MainActivity"
-            android:exported="true">
+            android:exported="true"
+            android:windowSoftInputMode="stateAlwaysHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
