@@ -6,17 +6,17 @@
     <data>
         <variable
             name="presenter"
-            type="murat.cleanarchitecture.sample.presentation.ui.activity.MainActivity" />
+            type="murat.cleanarchitecture.sample.feature_note.presentation.activity.MainActivity" />
 
         <variable
             name="viewModel"
-            type="murat.cleanarchitecture.sample.presentation.ui.viewmodel.MainAcitivityViewModel" />
+            type="murat.cleanarchitecture.sample.feature_note.presentation.view_model.MainAcitivityViewModel" />
     </data>
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="murat.cleanarchitecture.sample.presentation.ui.activity.MainActivity">
+        tools:context="murat.cleanarchitecture.sample.feature_note.presentation.activity.MainActivity">
 
         <!-- RecyclerView for show notes-->
         <androidx.recyclerview.widget.RecyclerView
