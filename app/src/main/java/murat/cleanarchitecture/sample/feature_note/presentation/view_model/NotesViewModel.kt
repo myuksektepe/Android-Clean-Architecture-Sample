@@ -12,36 +12,20 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import murat.cleanarchitecture.sample.feature_note.domain.model.Note
 import murat.cleanarchitecture.sample.feature_note.domain.use_case.NoteUseCases
-import murat.cleanarchitecture.sample.util.ResultState
 import murat.cleanarchitecture.sample.util.base.BaseViewModel
+import murat.cleanarchitecture.sample.util.model.ResultState
 import sample.R
 import javax.inject.Inject
 
-/**
-
-ViewModel
-
-Kendisini çağıracak olan Activity veya Fragment için gerekli olan değişken ve fonksiyonları barındırır.
-
-Clean Architecture prensibine göre ViewModel'ler içerisinde Bussines Logic işlemleri barındırmazlar bu sebeple
-bu değişken ve fonksiyonların içerisini doldurmak için Bussines Logic işlerimizi yaptığımız
-Domain katmanındaki UseCase sınıflarına bağımlılık oluştururlar.
-
-Bütün amaçları kendisine gelen verileri doğru şekilde ilgili UI'a aktarmaktır.
-
-Hilt için @HiltViewModel ile annotate edilirler.
-
- */
-
 @HiltViewModel
-class MainAcitivityViewModel @Inject constructor(
+class NotesViewModel @Inject constructor(
     private val application: Application,
-    private val noteUseCases: NoteUseCases,
+    private val noteUseCases: NoteUseCases
 ) : BaseViewModel() {
 
-    private var _mutableListNotes = MutableLiveData<ResultState<MutableList<Note>>>()
-    val mutableListNotes: LiveData<ResultState<MutableList<Note>>>
-        get() = _mutableListNotes
+    private var _getNotes = MutableLiveData<ResultState<MutableList<Note>>>()
+    val getNotes: LiveData<ResultState<MutableList<Note>>>
+        get() = _getNotes
 
 
     private var _insertNote = MutableLiveData<ResultState<Unit>>()
@@ -61,7 +45,7 @@ class MainAcitivityViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             noteUseCases.getNotesUseCase.invoke().collect {
                 handleTask(it) {
-                    _mutableListNotes.postValue(it)
+                    _getNotes.postValue(it)
                 }
             }
         }

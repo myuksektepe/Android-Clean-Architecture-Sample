@@ -1,4 +1,4 @@
-package murat.cleanarchitecture.sample.util
+package murat.cleanarchitecture.sample.util.model
 
 /**
  * TODO ResultState?

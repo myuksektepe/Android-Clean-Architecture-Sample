@@ -11,9 +11,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.LifecycleOwner
-import murat.cleanarchitecture.sample.util.ResultState
+import murat.cleanarchitecture.sample.util.model.ResultState
 import sample.R
-import java.util.*
 
 /**
  * TODO BaseActivity?
@@ -103,13 +102,5 @@ abstract class BaseActivity<T : BaseViewModel, B : ViewDataBinding> : AppCompatA
             layoutParams.weight = 10f
             btnPositive.layoutParams = layoutParams
         }
-    }
-
-    fun randomColorHex(): String {
-        val random = Random()
-        val nextInt: Int = random.nextInt(0xffffff + 1)
-        val colorCode = String.format("#%06x", nextInt)
-
-        return colorCode
     }
 }

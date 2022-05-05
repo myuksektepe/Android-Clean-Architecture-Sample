@@ -2,7 +2,7 @@ package murat.cleanarchitecture.sample.util.base
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import murat.cleanarchitecture.sample.util.ResultState
+import murat.cleanarchitecture.sample.util.model.ResultState
 
 /**
  * TODO BaseViewModel?

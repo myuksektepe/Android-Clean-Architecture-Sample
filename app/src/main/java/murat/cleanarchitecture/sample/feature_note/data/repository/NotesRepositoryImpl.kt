@@ -4,7 +4,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import murat.cleanarchitecture.sample.feature_note.domain.model.Note
 import murat.cleanarchitecture.sample.feature_note.domain.repository.NotesRepository
-import murat.cleanarchitecture.sample.util.ResultState
+import murat.cleanarchitecture.sample.util.model.ResultState
 import javax.inject.Inject
 
 /**

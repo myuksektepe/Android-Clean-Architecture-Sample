@@ -1,70 +1,49 @@
-package murat.cleanarchitecture.sample.feature_note.presentation.activity
+package murat.cleanarchitecture.sample.feature_note.presentation.view.fragment
 
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.viewModels
-import androidx.lifecycle.LifecycleOwner
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import dagger.hilt.android.AndroidEntryPoint
 import murat.cleanarchitecture.sample.feature_note.domain.model.Note
 import murat.cleanarchitecture.sample.feature_note.presentation.adapter.NotesAdapter
-import murat.cleanarchitecture.sample.feature_note.presentation.view_model.MainAcitivityViewModel
-import murat.cleanarchitecture.sample.util.ResultState
-import murat.cleanarchitecture.sample.util.base.BaseActivity
+import murat.cleanarchitecture.sample.feature_note.presentation.view_model.NotesViewModel
+import murat.cleanarchitecture.sample.util.base.BaseFragment
 import murat.cleanarchitecture.sample.util.extensions.hideKeyboard
+import murat.cleanarchitecture.sample.util.extensions.randomColorHex
+import murat.cleanarchitecture.sample.util.model.ResultState
 import sample.R
-import sample.databinding.ActivityMainBinding
+import sample.databinding.FragmentNotesBinding
 import java.util.*
 
-
-/**
- *
- * Activity ve Fragment
- *
- * Kendisi için üretilmiş ViewModel'lere bağlıdır. Bu ViewModeller içerisindeki
- * fonksiyonları tetikleterek kendisine geri döndürülen veriler ile UI elementlerini manipüle ederler.
- *
- * Bu işlemler sırasında listeleme yapılacak ise (Örn: RecyclerView içerisinde notların listelenmesi gibi) Adapter kullanabilirler.
- *
- * Kendisine ayrılmış Layout'lara (yani XML ekran tasarım dosyalarına) ulaşırken ViewBinding veya DataBindig kullanabilirler.
-
-
- * ViewBinding ve DataBindig Nedir? Farkları Nelerdir?
- *
- * ViewBinding veya DataBindig; UI'daki bir elemana ulaşırken findViewById gibi belleği yoran, ilgili elemanı bulmak için UI'a sürekli istekte
- * bulunan yapı yerine ilgili UI'daki tüm elemanların bir cache bellekte tutulup hızlıca ulaşılmasını sağlayan bir yapıdır.
- *
- * * ViewBinding ile sadece logic'ten ui elementlerini yönetebilirken,
- * * DataBinding ise hem logic'ten ui'i  hem de ui'dan logic'i yönetebilmek üzere iki yönlü çalışabilir.
- *
- */
-
 @AndroidEntryPoint
-class MainActivity : BaseActivity<MainAcitivityViewModel, ActivityMainBinding>() {
+class NotesFragment : BaseFragment<NotesViewModel, FragmentNotesBinding>() {
 
-    override val layoutRes: Int = R.layout.activity_main
-    override val viewModel: MainAcitivityViewModel by viewModels()
-    override var viewLifecycleOwner: LifecycleOwner = this
+    override val layoutRes: Int = R.layout.fragment_notes
+    override val viewModel: NotesViewModel by viewModels()
+
     private lateinit var notesAdapter: NotesAdapter
     private lateinit var frmAddNote: ViewGroup
     private lateinit var fabAdd: FloatingActionButton
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun initBinding() {
+        super.initBinding()
+        binding.presenter = this
+        binding.viewModel = viewModel
+    }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         setUI()
-        //getMockNotes()
-
+        viewModel.getAllNotes()
     }
 
     override fun observeViewModel() {
-        viewModel.getAllNotes()
-
-        viewModel.mutableListNotes.observe(viewLifecycleOwner, {
+        viewModel.getNotes.observe(viewLifecycleOwner) {
             when (it) {
                 is ResultState.SUCCESS -> {
                     if (it.data?.size!! > 0) {
@@ -81,13 +60,7 @@ class MainActivity : BaseActivity<MainAcitivityViewModel, ActivityMainBinding>()
 
                 }
             }
-        })
-    }
-
-    override fun initBinding() {
-        super.initBinding()
-        binding.presenter = this
-        binding.viewModel = viewModel
+        }
     }
 
     private fun setUI() {
@@ -102,7 +75,6 @@ class MainActivity : BaseActivity<MainAcitivityViewModel, ActivityMainBinding>()
                 viewModel.getNote.observe(viewLifecycleOwner) {
                     when (it) {
                         is ResultState.SUCCESS -> {
-                            //hideNewNotePage(null)
                             binding.noteTitle.editText?.setText(it.data!!.title)
                             binding.noteContent.editText?.setText(it.data!!.content)
                             showNewNotePage()
@@ -153,6 +125,9 @@ class MainActivity : BaseActivity<MainAcitivityViewModel, ActivityMainBinding>()
     }
 
     private fun showNewNotePage() {
+        binding.noteTitle.editText?.text?.clear()
+        binding.noteContent.editText?.text?.clear()
+
         frmAddNote.startAnimation(viewModel.bottomUp)
         frmAddNote.visibility = View.VISIBLE
 
@@ -160,15 +135,12 @@ class MainActivity : BaseActivity<MainAcitivityViewModel, ActivityMainBinding>()
         fabAdd.visibility = View.GONE
     }
 
-    fun hideNewNotePage(view: View?) {
+    fun hideNewNotePage() {
         frmAddNote.startAnimation(viewModel.bottomDown)
         frmAddNote.visibility = View.GONE
 
         fabAdd.startAnimation(viewModel.bottomUp)
         fabAdd.visibility = View.VISIBLE
-
-        //binding.noteTitle.editText?.text?.clear()
-        //binding.noteContent.editText?.text?.clear()
 
         binding.noteTitle.error = null
         binding.noteContent.error = null
@@ -195,7 +167,7 @@ class MainActivity : BaseActivity<MainAcitivityViewModel, ActivityMainBinding>()
 
             viewModel.insertNote(newNote).apply {
                 observeViewModel()
-                hideNewNotePage(null)
+                hideNewNotePage()
             }
         }
     }
@@ -222,7 +194,7 @@ class MainActivity : BaseActivity<MainAcitivityViewModel, ActivityMainBinding>()
         )
         viewModel.insertNote(mockNote).apply {
             observeViewModel()
-            hideNewNotePage(null)
+            hideNewNotePage()
         }
     }
 }

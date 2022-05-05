@@ -2,7 +2,7 @@ package murat.cleanarchitecture.sample.feature_note.domain.repository
 
 import kotlinx.coroutines.flow.Flow
 import murat.cleanarchitecture.sample.feature_note.domain.model.Note
-import murat.cleanarchitecture.sample.util.ResultState
+import murat.cleanarchitecture.sample.util.model.ResultState
 
 /**
  * Feature -> Repository
